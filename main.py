@@ -54,6 +54,7 @@ def new_post():
 def submit_post():
     title_name = request.form['title']
     body_name = request.form['body']
+    owner = User.query.filter_by(email=session['user']).first()
 
     title_error = ''
     body_error = ''
@@ -65,7 +66,7 @@ def submit_post():
         body_error = 'Not a valid body'
 
     if not title_error and not body_error:
-        new_entry = Blog(title_name, body_name)
+        new_entry = Blog(title_name, body_name, owner)
         db.session.add(new_entry)  
         db.session.commit()
         post_id = Blog.query.filter_by(title=title_name).first().id
@@ -132,7 +133,7 @@ def signup():
 @app.route('/logout')
 def logout():
     del session['user']
-    return redirect('/login')
+    return redirect('/logout')
 
 @app.route('/')
 def home():
