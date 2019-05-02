@@ -7,7 +7,7 @@ app.secret_key = 'secretkey'
 
 @app.before_request
 def require_login():
-    allowed_routes = ['login', 'register', 'signup', 'list_blogs', 'home']
+    allowed_routes = ['login', 'register', 'signup', 'list_blogs', 'home', 'static']
     if request.endpoint not in allowed_routes and 'user' not in session:
         return redirect('/login')
 
@@ -77,7 +77,7 @@ def signup():
         password = request.form['password']
         verify = request.form['verify']
 
-        if user == "" or password == "" or verify == "":
+        if user == '' or password == '' or verify == '':
             flash('One or more fields invalid', 'error')
             return redirect('/signup')
 
@@ -109,7 +109,7 @@ def signup():
 @app.route('/')
 def home():
     users = User.query.all()
-    return render_template('index.html', title="Blogz", header='All blog users!', users=users)
+    return render_template('index.html', title='Blogz', header='All blog users!', users=users)
 
 @app.route('/logout')
 def logout():
